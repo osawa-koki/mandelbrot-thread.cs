@@ -1,6 +1,9 @@
-﻿using System.Xml.Schema;
+using System.Xml.Schema;
 using System.Xml;
 using System.Xml.Linq;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
+using System.Numerics;
 
 internal static class Program
 {
@@ -73,13 +76,63 @@ internal static class Program
       XElement config = xml_document.Element("config")!;
       int width = int.Parse(config.Element("width")?.Value!);
       int height = int.Parse(config.Element("height")?.Value!);
-      double x_min = int.Parse(config.Element("x_min")?.Value!);
-      double x_max = int.Parse(config.Element("x_max")?.Value!);
-      double y_min = int.Parse(config.Element("y_min")?.Value!);
-      double y_max = int.Parse(config.Element("y_max")?.Value!);
+      double x_min = double.Parse(config.Element("x_min")?.Value!);
+      double x_max = double.Parse(config.Element("x_max")?.Value!);
+      double y_min = double.Parse(config.Element("y_min")?.Value!);
+      double y_max = double.Parse(config.Element("y_max")?.Value!);
       int iteration = int.Parse(config.Element("iteration")?.Value!);
       int threshold = int.Parse(config.Element("threshold")?.Value!);
       string output_path = config.Element("output_path")?.Value!;
+
+
+      // for py := 0; py < height; py++ {
+      //   y := float64(py)/float64(height)*(ymax-ymin) + ymin
+      //   for px := 0; px < width; px++ {
+      //     x := float64(px)/float64(width)*(xmax-xmin) + xmin
+      //     z := complex(x, y)
+      //     color := (func() color.Color {
+      //       var v complex128
+      //       for n := uint8(0); n < iter; n++ {
+      //         v = v*v + z
+      //         if cmplx.Abs(v) > 2 {
+      //           return color.Gray{255 - thre*n}
+      //         }
+      //       }
+      //       return color.Black
+      //     })()
+      //     img.Set(px, py, color)
+      //   }
+      // }
+
+      // マンデルブロ集合を描画する。
+      var image = new Image<Rgba32>(width, height);
+
+      for (int py = 0; py < height; py++)
+      {
+        double y = py / (double)height * (y_max - y_min) + y_min;
+        for (int px = 0; px < width; px++)
+        {
+          double x = px / (double)width * (x_max - x_min) + x_min;
+          Complex z = new(x, y);
+          Rgba32 color = (new Func<Rgba32>(() =>
+          {
+            Complex v = new(0, 0);
+            for (int n = 0; n < iteration; n++)
+            {
+              v = v * v + z;
+              if (v.Magnitude > 2)
+              {
+                var a = 255 - threshold * n;
+                return new Rgba32(a, a, a, 255);
+              }
+            }
+            return new Rgba32(0, 0, 0, 255);
+          }))();
+          image[px, py] = color;
+        }
+      }
+
+      image.Save(output_path);
 
       return 0;
     } catch (Exception ex)
