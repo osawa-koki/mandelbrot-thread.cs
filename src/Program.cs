@@ -104,35 +104,58 @@ internal static class Program
       //   }
       // }
 
-      // マンデルブロ集合を描画する。
       var image = new Image<Rgba32>(width, height);
 
-      for (int py = 0; py < height; py++)
+      // スレッド数
+      int threadCount = Environment.ProcessorCount;
+
+      // スレッドごとの処理範囲
+      int range = height / threadCount;
+
+      // スレッドごとに処理を開始する
+      Thread[] threads = new Thread[threadCount];
+      for (int i = 0; i < threadCount; i++)
       {
-        double y = py / (double)height * (y_max - y_min) + y_min;
-        for (int px = 0; px < width; px++)
+        int start = i * range;
+        int end = (i == threadCount - 1) ? height : start + range;
+        threads[i] = new Thread(() =>
         {
-          double x = px / (double)width * (x_max - x_min) + x_min;
-          Complex z = new(x, y);
-          Rgba32 color = (new Func<Rgba32>(() =>
+          for (int py = start; py < end; py++)
           {
-            Complex v = new(0, 0);
-            for (int n = 0; n < iteration; n++)
+            double y = py / (double)height * (y_max - y_min) + y_min;
+            for (int px = 0; px < width; px++)
             {
-              v = v * v + z;
-              if (v.Magnitude > 2)
+              double x = px / (double)width * (x_max - x_min) + x_min;
+              Complex z = new(x, y);
+              Rgba32 color = (new Func<Rgba32>(() =>
               {
-                var a = 255 - threshold * n;
-                return new Rgba32(a, a, a, 255);
-              }
+                Complex v = new(0, 0);
+                for (int n = 0; n < iteration; n++)
+                {
+                  v = v * v + z;
+                  if (v.Magnitude > 2)
+                  {
+                    var a = 255 - threshold * n;
+                    return new Rgba32(a, a, a, 255);
+                  }
+                }
+                return new Rgba32(0, 0, 0, 255); // 収束しない場合は黒色を返す
+              }))();
+              image[px, py] = color;
             }
-            return new Rgba32(0, 0, 0, 255);
-          }))();
-          image[px, py] = color;
-        }
+          }
+        });
+        threads[i].Start();
+      }
+
+      // スレッドの終了を待つ
+      foreach (Thread thread in threads)
+      {
+        thread.Join();
       }
 
       image.Save(output_path);
+
 
       return 0;
     } catch (Exception ex)
