@@ -136,7 +136,6 @@ internal static class Program
 
       image.Save(output_path);
 
-
       return 0;
     } catch (Exception ex)
     {
@@ -144,5 +143,4 @@ internal static class Program
       return 1;
     }
   }
-
 }
