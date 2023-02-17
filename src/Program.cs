@@ -135,7 +135,7 @@ internal static class Program
                   v = v * v + z;
                   if (v.Magnitude > 2)
                   {
-                    var a = 255 - threshold * n;
+                    var a = (byte)(255 - (double)threshold * n);
                     return new Rgba32(a, a, a, 255);
                   }
                 }
