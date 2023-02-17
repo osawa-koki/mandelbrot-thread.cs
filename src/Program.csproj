@@ -7,4 +7,17 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="SixLabors.ImageSharp" Version="2.1.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="config.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="config.xsd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

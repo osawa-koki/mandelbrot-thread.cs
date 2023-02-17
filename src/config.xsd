@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<xsd:element name="config">
+  <xsd:complexType>
+    <xsd:sequence>
+
+      <xsd:element name="width" type="xsd:nonNegativeInteger" />
+      <xsd:element name="height" type="xsd:nonNegativeInteger" />
+      <xsd:element name="x_min" type="xsd:double" />
+      <xsd:element name="x_max" type="xsd:double" />
+      <xsd:element name="y_min" type="xsd:double" />
+      <xsd:element name="y_max" type="xsd:double" />
+      <xsd:element name="iteration" type="xsd:nonNegativeInteger" />
+      <xsd:element name="threshold" type="xsd:nonNegativeInteger" />
+      <xsd:element name="output_path" type="xsd:string" />
+
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:element>
+</xsd:schema>
