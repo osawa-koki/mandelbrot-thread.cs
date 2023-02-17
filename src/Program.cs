@@ -84,26 +84,6 @@ internal static class Program
       int threshold = int.Parse(config.Element("threshold")?.Value!);
       string output_path = config.Element("output_path")?.Value!;
 
-
-      // for py := 0; py < height; py++ {
-      //   y := float64(py)/float64(height)*(ymax-ymin) + ymin
-      //   for px := 0; px < width; px++ {
-      //     x := float64(px)/float64(width)*(xmax-xmin) + xmin
-      //     z := complex(x, y)
-      //     color := (func() color.Color {
-      //       var v complex128
-      //       for n := uint8(0); n < iter; n++ {
-      //         v = v*v + z
-      //         if cmplx.Abs(v) > 2 {
-      //           return color.Gray{255 - thre*n}
-      //         }
-      //       }
-      //       return color.Black
-      //     })()
-      //     img.Set(px, py, color)
-      //   }
-      // }
-
       var image = new Image<Rgba32>(width, height);
 
       // スレッド数
