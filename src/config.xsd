@@ -6,10 +6,10 @@
 
       <xsd:element name="width" type="xsd:nonNegativeInteger" />
       <xsd:element name="height" type="xsd:nonNegativeInteger" />
-      <xsd:element name="x_min" type="xsd:nonNegativeInteger" />
-      <xsd:element name="x_max" type="xsd:nonNegativeInteger" />
-      <xsd:element name="y_min" type="xsd:nonNegativeInteger" />
-      <xsd:element name="y_max" type="xsd:nonNegativeInteger" />
+      <xsd:element name="x_min" type="xsd:double" />
+      <xsd:element name="x_max" type="xsd:double" />
+      <xsd:element name="y_min" type="xsd:double" />
+      <xsd:element name="y_max" type="xsd:double" />
       <xsd:element name="iteration" type="xsd:nonNegativeInteger" />
       <xsd:element name="threshold" type="xsd:nonNegativeInteger" />
       <xsd:element name="output_path" type="xsd:string" />

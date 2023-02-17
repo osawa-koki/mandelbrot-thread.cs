@@ -2,11 +2,14 @@
 
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="config.xsd">
 
-  <database_host>localhost</database_host>
-  <database_port>27017</database_port>
-  <database_username>normal_user</database_username>
-  <database_password>Password1234</database_password>
-  <database_database>my_database</database_database>
-  <database_collection>my_collection</database_collection>
+  <width>1024</width>
+  <height>1024</height>
+  <x_min>-2.0</x_min>
+  <x_max>2.0</x_max>
+  <y_min>-2.0</y_min>
+  <y_max>2.0</y_max>
+  <iteration>100</iteration>
+  <threshold>10</threshold>
+  <output_path>mandelbrot.png</output_path>
 
 </config>
